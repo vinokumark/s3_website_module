@@ -52,8 +52,9 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
           TARGETS=""
-          DEPLOY_OPTIONS="${{ github.event.inputs.DEPLOY_OPTIONS }}"
-          if [[ "$DEPLOY_OPTIONS" == *"C4C"* ]]; then
-            TARGETS+="-target=module.bigquery[c4c] "
-          fi
+          for OPTION in C4C SFDC API FINANCE; do
+            if [[ "${{ github.event.inputs.[$OPTION] }}" == "true" ]]; then
+             TARGETS+="-target=module.bigquery[c4c] "
+            fi
+          done 
           echo "TF_TARGETS=$TARGETS"
