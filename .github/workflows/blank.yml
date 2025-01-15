@@ -13,11 +13,22 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
-      DEPLOY_OPTIONS:
-        description: 'Select components to deploy (C4C, SFDC, API, FINANCE)'
+      C4C:
+        description: 'Deploy C4C'
         required: false
-        default: 'C4C,API'
-        type: string
+        default: 'false'
+      SFDC:
+        description: 'Deploy SFDC'
+        required: false
+        default: 'false'
+      API:
+        description: 'Deploy API'
+        required: false
+        default: 'false'
+      FINANCE:
+        description: 'Deploy Finance'
+        required: false
+        default: 'false'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
