@@ -16,7 +16,7 @@ on:
       DEPLOY_OPTIONS:
         description: 'Select components to deploy (C4C, SFDC, API, FINANCE)'
         required: false
-        default: ''
+        default: 'C4C,API'
         type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
