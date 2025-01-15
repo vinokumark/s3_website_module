@@ -49,8 +49,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
           TARGETS=""
           for OPTION in C4C SFDC API FINANCE; do
             if [[ "${{ github.event.inputs.[$OPTION] }}" == "true" ]]; then
