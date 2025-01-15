@@ -51,7 +51,7 @@ jobs:
         run: |
           TARGETS=""
           for OPTION in C4C SFDC API FINANCE; do
-            INPUT_VALUE="${{ github.event.inputs[$OPTION] }}"
+            INPUT_VALUE="${{ github.event.inputs[OPTION] }}"
             if [[ "$INPUT_VALUE" == "true" ]]; then
              TARGETS+="-target=module.bigquery[${OPTION,,}] "
             fi
