@@ -50,10 +50,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           TARGETS=""
-          for OPTION in C4C SFDC API FINANCE; do
-            INPUT_VALUE="${{ github.event.inputs[OPTION] }}"
-            if [[ "$INPUT_VALUE" == "true" ]]; then
-             TARGETS+="-target=module.bigquery[${OPTION,,}] "
-            fi
-          done 
+          if [[ "${{ inputs.C4C }}" == "true" ]]; then
+             TARGETS+="-target=module.bigquery[C4C] "
+          fi
           echo "TF_TARGETS=$TARGETS"
