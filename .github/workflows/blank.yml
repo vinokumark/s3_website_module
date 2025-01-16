@@ -37,7 +37,7 @@ jobs:
         for OPTION in C4C SFDC API FINANCE; do
           VALUE=$(eval echo \$$OPTION)  # Dynamically get the variable value
           if [[ "$VALUE" == "true" ]]; then
-            TARGETS+="-target=module.bigquery[\"${OPTION}"\] "
+            TARGETS+="-target=module.bigquery[\"${OPTION}\"] " 
           fi
         done
 
