@@ -1,16 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  # push:
-  #   branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       C4C:
@@ -30,27 +18,33 @@ on:
         required: false
         default: 'false'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+    - name: Construct Terraform Targets
+      run: |
+        # Extract inputs from the workflow
+        C4C="${{ github.event.inputs.C4C }}"
+        SFDC="${{ github.event.inputs.SFDC }}"
+        API="${{ github.event.inputs.API }}"
+        FINANCE="${{ github.event.inputs.FINANCE }}"
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+        # Initialize the TARGETS variable
+        TARGETS=""
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          TARGETS=""
-          if [[ "${{ inputs.C4C }}" == "true" ]]; then
-             TARGETS+="-target=module.bigquery[C4C] "
+        # Loop through the options and add valid targets
+        for OPTION in C4C SFDC API FINANCE; do
+          VALUE=$(eval echo \$$OPTION)  # Dynamically get the variable value
+          if [[ "$VALUE" == "true" ]]; then
+            TARGETS+="-target=module.bigquery[${OPTION,,}] "
           fi
-          echo "TF_TARGETS=$TARGETS"
+        done
+
+        # Output the constructed TARGETS to the GitHub environment
+        echo "TF_TARGETS=$TARGETS" >> $GITHUB_ENV
+
+    - name: Use Constructed Terraform Targets
+      run: |
+        echo "Using the following Terraform targets:"
+        echo $TF_TARGETS
